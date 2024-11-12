@@ -1,30 +1,92 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <v-card>
+    <v-layout>
+      <v-app-bar
+        color="indigo"
+        prominent
+      >
+        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+        <v-toolbar-title>Hydrantenkontrolle</v-toolbar-title>
+      </v-app-bar>
+      <v-navigation-drawer
+        v-model="drawer"
+        theme="dark"
+        permanent
+        :width="300"
+      >
+        <v-list v-if="user.userId" nav>
+          <v-list-item prepend-icon="mdi-home" to="/" title="Willkommen" value="welcome"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-supervisor-circle" to="/dashboard" title="Übersicht" value="Übersicht"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-supervisor-circle" to="/profile" title="Profil" value="Profil"></v-list-item>
+        </v-list>
+        <v-list v-else nav>
+          <v-list-item prepend-icon="mdi-home" to="/" title="Willkommen" value="welcome"></v-list-item>
+          <v-list-item prepend-icon="mdi-email" to="/signup" title="Registrieren" value="Registrieren"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-supervisor-circle" to="/login" title="Login" value="Login"></v-list-item>
+        </v-list>
+      
+        <template v-slot:append v-if="user.userId" >
+          <div class="pa-2">
+            <v-btn block
+            @click.prevent="handleLogout"
+            :disabled="isLoggedOut">Logout</v-btn>
+          </div>
+        </template>
+      </v-navigation-drawer>
+      <v-main style="min-height: 100vh">
+        <v-container max-width="1200">
+          <router-view />
+        </v-container>
+      </v-main>
+    </v-layout>
+  </v-card>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Userfront from "@userfront/toolkit/vue";
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  computed: {
+    user() {
+      return Userfront.user;
+    },
+    isLoggedOut() {
+      return !Userfront.accessToken();
     }
-  }
-}
-</style>
+  },
+  methods: {
+    // Log out with Userfront.logout()
+    handleLogout() {
+      Userfront.logout();
+    }
+  },
+  data: () => ({
+    drawer: true,
+    group: null,
+    items: [
+      {
+        title: 'Foo',
+        value: 'foo',
+      },
+      {
+        title: 'Bar',
+        value: 'bar',
+      },
+      {
+        title: 'Fizz',
+        value: 'fizz',
+      },
+      {
+        title: 'Buzz',
+        value: 'buzz',
+      },
+    ],
+  }),
+  watch: {
+      group () {
+        this.drawer = false
+      },
+    },
+};
+</script>
