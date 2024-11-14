@@ -1,15 +1,12 @@
 <template>
   <div>
-    <h1>Profil</h1>
-    <div>
-      <h3>{{ user.username }}</h3>
-    </div>
-    <button @click.prevent="logout">Log out</button>
+    <h1>Mein Profil</h1>
 
     <!-- <pre><code>{{ user }}</code></pre> -->
 
-    <table width="100%" border="1" cellspacing="0">
-      <tr>
+    <v-table theme="dark">
+      <tbody>
+        <tr>
         <td>Konto ID</td>
         <td>{{ user.userId }}</td>
       </tr>
@@ -25,7 +22,8 @@
         <td>E-Mail bestätigt</td>
         <td>{{ user.isEmailConfirmed ? "Ja" : "Ausstehend" }}</td>
       </tr>
-    </table>
+      </tbody>
+    </v-table>
   </div>
 </template>
 
@@ -40,13 +38,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-table {
-  width: 100%;
-  text-align: left;
-}
-pre {
-  text-align: left;
-}
-</style>

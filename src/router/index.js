@@ -6,6 +6,10 @@ import DashboardView from "@/views/secret/DashboardView.vue";
 import Userfront from "@userfront/toolkit/vue";
 import ProfileView from "@/views/secret/ProfileView.vue";
 import LogoutView from "@/views/secret/LogoutView.vue";
+import AboutView from "../views/public/AboutView.vue";
+import HydrantCreateView from "@/views/secret/HydrantCreateView.vue";
+
+const isLoggedIn = !!Userfront.tokens.accessToken;
 
 const routes = [
   {
@@ -16,11 +20,7 @@ const routes = [
   {
     path: "/",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/public/AboutView.vue"),
+    component: isLoggedIn ? DashboardView : AboutView,
   },
   {
     path: "/login",
@@ -38,14 +38,14 @@ const routes = [
     component: ResetView,
   },
   {
-    path: "/dashboard",
-    name: "DashboardView",
-    component: DashboardView,
-  },
-  {
     path: "/profile",
     name: "ProfileView",
     component: ProfileView,
+  },
+  {
+    path: "/hydrant-add",
+    name: "HydrantCreate",
+    component: HydrantCreateView,
   },
 ];
 
@@ -56,12 +56,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // If the user is not logged in, redirect to /login
-  const isLoggedIn = !!Userfront.tokens.accessToken;
   if (to.name === "DashboardView" && !isLoggedIn) {
     return next({ path: "/login" });
   }
   if (to.name === "SignupView" && isLoggedIn) {
-    return next({ path: "/dashboard" });
+    return next({ path: "/" });
   }
 
   next();

@@ -16,8 +16,8 @@
         :width="300"
       >
         <v-list v-if="user.userId" nav>
-          <v-list-item prepend-icon="mdi-home" to="/" title="Willkommen" value="welcome"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-supervisor-circle" to="/dashboard" title="Übersicht" value="Übersicht"></v-list-item>
+          <v-list-item prepend-icon="mdi-home" to="/" title="Hydranten Übersicht" value="Übersicht"></v-list-item>
+          <v-list-item prepend-icon="mdi-plus" to="/hydrant-add" title="Hydrant hinzufügen" value="addHydrant"></v-list-item>
           <v-list-item prepend-icon="mdi-account-supervisor-circle" to="/profile" title="Profil" value="Profil"></v-list-item>
         </v-list>
         <v-list v-else nav>
